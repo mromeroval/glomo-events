@@ -1,0 +1,19 @@
+{
+  "name": "glomo-events",
+  "version": "1.0.0",
+  "description": "GLOMO Assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mromeroval/glomo-events.git"
+  },
+  "author": "Mauricio Romero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mromeroval/glomo-events/issues"
+  },
+  "homepage": "https://github.com/mromeroval/glomo-events#readme"
+}
