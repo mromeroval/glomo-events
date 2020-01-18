@@ -7,12 +7,12 @@ const path = require('path');
 
 // SQLite DB Connection
 const dbPath = path.resolve(__dirname, '../db/events.db')
-let db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
-  if (err) {
-    console.error(err.message);
-  } else {
-      console.log('Connected to the events database.');
-  }
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+        console.error(err.message);
+    } else {
+        console.log('Connected to the events database.');
+    }
 });
 
 
@@ -47,24 +47,40 @@ events.forEach(event => {
         console.log(`Rows inserted ${this.changes}`);
       });
     });
-    db.close();
 
 
 // EVENTS API
 
 // Get all events
-router.get('/',(req,res) => {
-    res.json(events);
-})
+router.get('/', (req, res) => {
+    let sql = 'SELECT DISTINCT awayName, homeName, event_group, id, name, sport, country, state FROM events ORDER BY event_group';
+        db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        } else {
+            let response = [];
+            rows.forEach((row) => {
+                response.push(row);
+            });
+            res.json(response);
+        }
+    });
+});
 
-// Gets individual event
+// Get event by ID
 router.get('/:id', (req, res) => {
-    const found = events.some(event => event.id === parseInt(req.params.id))
-    if (found){
-        res.json(events.filter(event => event.id === parseInt(req.params.id)));
-    } else {
-        res.status(400).json({msg:`Event with the id of ${req.params.id} doesn't exist`});
+    let sql = 'SELECT awayName, homeName, event_group, id, name, sport, country, state FROM events WHERE id  = ?';
+    let id = req.params.id;
+    db.get(sql, [id], (err, row) => {
+    if (err) {
+        return console.error(err.message);
     }
+    if (row) {
+        res.json(row);
+        } else {
+            res.status(400).json({msg:`Event with the id of ${req.params.id} doesn't exist`});
+        }
+    });
 });
 
 module.exports = router;
