@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import PollList from './components/PollList'
+import PollPage from './components/PollPage'
 
 function App() {
   return (
     <div>
-      <h3>Sports Poll</h3>
-      <PollList />
+      <PollPage />
 
     </div>
   );

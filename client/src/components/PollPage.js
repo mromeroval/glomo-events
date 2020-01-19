@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../lights.jpg';
+// import image from '../lights.jpg';
 
 const API = 'http://localhost:5000/api/events';
 
@@ -22,40 +22,45 @@ class PollList extends React.Component {
   render() {
     return (
       <div>
-
+      <h1>Sports Poll</h1>
+      <div id="container">
+        <div className="bgImage">
+        {/* <img src={image} alt="background"/> */}
         <header id="header" className="grid">
-          <div className="bg-image"></div>
-          <h3>Soccer</h3>
-          <h3>Event Name</h3>
+          
+          <h1>Soccer</h1>
+          <h2>Event Name</h2>
           <p>Country - Group</p>
-          <a href="#main" id="btn">
-            Vote
-          </a>
         </header>
 
         <main id="main">
-          <section id="section-a" className="grid">
+          <section id="voting-section" className="grid">
             <div className="content-wrap">
               Voting area
               <ul>
                 <li>
                   <div className="card">
                     <div className="card-content">
-                      <h3>Home</h3>
+                      <h2>Home</h2>
+                      <h3>Name of Home</h3>
+                      <button className="btn" /> 
                     </div>
                   </div>
                 </li>
                 <li>
                   <div className="card">
                     <div className="card-content">
-                      <h3>Draw</h3>
+                      <h2>Draw</h2>
+                      <button className="btn" /> 
                     </div>
                   </div>
                 </li>
                 <li>
                   <div className="card">
                     <div className="card-content">
-                      <h3>Away</h3>
+                      <h2>Away</h2>
+                      <h3>Name of Away</h3>
+                      <button className="btn" /> 
                     </div>
                   </div>
                 </li>
@@ -67,7 +72,8 @@ class PollList extends React.Component {
         <footer id="main-footer" className="grid">
           <h3>Footer</h3>
         </footer>
-
+        </div>
+      </div>
       </div>
     );
   }
