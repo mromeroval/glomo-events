@@ -4,8 +4,8 @@
   "description": "GLOMO Assignment",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
+    "start": "concurrently \"node index\" \"cd client && npm run start\"",
+    "dev": "concurrently \"nodemon index\" \"cd client && npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/mromeroval/glomo-events#readme",
   "dependencies": {
+    "concurrently": "^5.0.2",
     "express": "^4.17.1",
     "nodemon": "^2.0.2",
     "sqlite3": "^4.1.1"
