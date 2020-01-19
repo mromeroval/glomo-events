@@ -31,8 +31,8 @@ events.forEach(event => {
                 "state) VALUES ( '" +
                 event.awayName + "','" +
                 event.createdAt + "','" +
-                event.group + "','" +
-                event.homeName + "'," +
+                event.homeName + "','" +
+                event.group + "', " +
                 event.id + ",'" +
                 event.name + "','" +
                 event.objectId + "','" +
