@@ -85,24 +85,27 @@ router.get('/:id', (req, res) => {
 
 // Post event vote
 router.post('/', (req, res) => {
-  console.log(req.body)
-    let values = [ req.body.user, parseInt(req.body.event)];
-    console.log(values)
-    let sql = 'SELECT id FROM polls WHERE user LIKE ? AND event = ?';
-    db.get(sql, values, (err, row) => {
+    // Commented for future validation
+    //let values = [ req.body.user, parseInt(req.body.event)];
+    // let sql = 'SELECT id FROM polls WHERE user LIKE ? AND event = ?';
+    let values = parseInt(req.body.event);
+    let sql = 'SELECT id FROM polls WHERE event = ?';
+    db.get(sql, [values], (err, row) => {
         if (err) {
             return console.error(err.message);
         }
 
         // Check if any result is submitted
-        if (!req.body.homeName & !req.body.awayName && !req.body.draw){
+        if (!req.body.homeName && !req.body.awayName && !req.body.draw){
             res.status(400).json({msg: 'Please submit a game result'})
         }
-
+        
+        // Commented for future validation
         // Check if user already voted for the event. If not then save vote
-        else if (row) {
-            res.status(400).json({msg:`User with email ${req.body.user} already voted in this event`});
-            } else {
+        // else if (row) {
+        //     res.status(400).json({msg:`User with email ${req.body.user} already voted in this event`});
+        //     } else {
+          else{
                 const values = [
                     req.body.event,
                     req.body.user,
