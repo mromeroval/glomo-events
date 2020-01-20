@@ -1,79 +1,76 @@
 import React from 'react';
-// import image from '../lights.jpg';
+import PollForm from './PollForm';
 
-const API = 'http://localhost:5000/api/events';
+const API = 'http://localhost:5000/api/events/';
 
 class PollList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      events: []
+      events: [],
+      activeEvent: {}
     };
+  }
+  
+
+   getSportList = (sport) => {
+    const events = this.state.events;
+    const sportList = [];
+    events.map(event => {
+      if (event.sport === sport) {
+        sportList.push(event)
+      }
+      return sportList
+    })
+  }
+
+  getEvent = (eventId) => {
+    const events = this.state.events;
+    const event = events.filter(event => event.id === 1003026234)
+    console.log(event)
+    this.setState({activeEvent: event})
+      return event
+  }
+
+  setActiveEvent = (event) => {
+    this.setState({activeEvent: event})
   }
 
   componentDidMount() {
     this.setState({ isLoading: true });
     fetch(API)
       .then(response => response.json())
-      .then(data => this.setState({ events: data }));
+      .then(events => {
+        this.setState({
+          events,
+          activeEvent : events[6]
+        });
+        console.log(this.state.events);
+        // let event = this.state.events.filter(event => event.id === 1003026234)
+        // console.log(event)
+        // this.setState({activeEvent: event})
+      })
+      .then(this.setState({ isLoading:false }))
   }
 
+
   render() {
+    
+    // const events = this.state.events;
+    
+    // let sports = [];
+    // events.map(event => {
+    //   sports.push(event.sport)
+    //   return sports;
+    // })
+    // const categories = new Set(sports);
+
+    
+
     return (
       <div>
-      <h1>Sports Poll</h1>
-      <div id="container">
-        <div className="bgImage">
-        {/* <img src={image} alt="background"/> */}
-        <header id="header" className="grid">
-          
-          <h1>Soccer</h1>
-          <h2>Event Name</h2>
-          <p>Country - Group</p>
-        </header>
-
-        <main id="main">
-          <section id="voting-section" className="grid">
-            <div className="content-wrap">
-              Voting area
-              <ul>
-                <li>
-                  <div className="card">
-                    <div className="card-content">
-                      <h2>Home</h2>
-                      <h3>Name of Home</h3>
-                      <button className="btn" /> 
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div className="card">
-                    <div className="card-content">
-                      <h2>Draw</h2>
-                      <button className="btn" /> 
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div className="card">
-                    <div className="card-content">
-                      <h2>Away</h2>
-                      <h3>Name of Away</h3>
-                      <button className="btn" /> 
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </main>
-
-        <footer id="main-footer" className="grid">
-          <h3>Footer</h3>
-        </footer>
-        </div>
-      </div>
+        <PollForm isLoading = {this.state.isLoading} event = {this.state.activeEvent} events = {this.state.events} />
       </div>
     );
   }
