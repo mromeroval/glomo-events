@@ -40,6 +40,12 @@ p {
 }
 
 
+.container {
+  border: rgba(255, 255, 255, 0.253) 1px solid;
+  margin: .5em;
+}
+
+
 .btn {
   background-color: #4CAF50;
   border: none;
@@ -59,33 +65,28 @@ p {
   background: #0b1a36;
 }
 
-#containter {
-  height: 100%;
-}
-
-
-
 .sport-title {
   padding: .5em;
 }
 
 .vs-area {
-  margin: 0.1em 1em;
+  margin: .2em 1em;
   background-color: #485369a2;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.705);
   box-shadow: 0 0 10px #9ecaed;
-
 }
+
 .vs-area-top {
   padding: 1em;
   background-color: #4853694b;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
 }
+
 .vs-area-bottom {
   padding: 1em;
   background-color: #4853694b;
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 0px 0px 5px 5px;
 }
 
 ul {
@@ -94,8 +95,8 @@ ul {
 }
 
 li{
-  margin: .5em;
-  padding: .5em;
+  padding: .3em;
+  margin-top: 1em;
   background-color: #485369a2;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.705);

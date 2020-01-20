@@ -12,7 +12,6 @@ class PollList extends React.Component {
       activeEvent: {}
     };
   }
-  
 
    getSportList = (sport) => {
     const events = this.state.events;
@@ -27,8 +26,7 @@ class PollList extends React.Component {
 
   getEvent = (eventId) => {
     const events = this.state.events;
-    const event = events.filter(event => event.id === 1003026234)
-    console.log(event)
+    const event = events.filter(event => event.id === eventId)
     this.setState({activeEvent: event})
       return event
   }
@@ -40,37 +38,31 @@ class PollList extends React.Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     fetch(API)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          throw new Error('Network response was Not OK');
+        }
+        return response.json()
+      })
       .then(events => {
         this.setState({
           events,
-          activeEvent : events[6]
+          activeEvent : events[0]
         });
-        console.log(this.state.events);
-        // let event = this.state.events.filter(event => event.id === 1003026234)
-        // console.log(event)
-        // this.setState({activeEvent: event})
       })
       .then(this.setState({ isLoading:false }))
+      .catch((error) => {
+        console.error('There has been a problem with your fetch operation:', error);
+      })
   }
 
-
   render() {
-    
-    // const events = this.state.events;
-    
-    // let sports = [];
-    // events.map(event => {
-    //   sports.push(event.sport)
-    //   return sports;
-    // })
-    // const categories = new Set(sports);
-
-    
-
     return (
       <div>
-        <PollForm isLoading = {this.state.isLoading} event = {this.state.activeEvent} events = {this.state.events} />
+        <PollForm
+          isLoading = {this.state.isLoading}
+          event = {this.state.activeEvent}
+          events = {this.state.events} />
       </div>
     );
   }
