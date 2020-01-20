@@ -85,6 +85,7 @@ router.get('/:id', (req, res) => {
 
 // Post event vote
 router.post('/', (req, res) => {
+  console.log(req.body)
     let values = [ req.body.user, parseInt(req.body.event)];
     console.log(values)
     let sql = 'SELECT id FROM polls WHERE user LIKE ? AND event = ?';

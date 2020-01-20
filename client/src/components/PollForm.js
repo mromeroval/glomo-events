@@ -4,16 +4,15 @@ class PollForm extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      awayName: 0,
-      homeName: 0,
-      draw: 0
+        awayName: 0,
+        homeName: 0,
+        draw: 0
     }
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event){
-    let name = event.target.name;
-    this.setState({[name]:1})
+  handleClick(name){
+    this.props.sendVote(name)
   }
   
   render(){
@@ -23,7 +22,6 @@ class PollForm extends React.Component {
       }
 
     return(
-      
       <div>
         <div className="container">
           <h1 className="title">Sports Poll</h1>
@@ -33,7 +31,7 @@ class PollForm extends React.Component {
           <p>Group : {event.event_group}</p>
 
           <header id="header">
-              <div className="vs-area vs-area-top">
+                <div className="vs-area vs-area-top">
                 <h2>{event.homeName}</h2>
               </div>
               <div className="vs-area">
@@ -55,16 +53,15 @@ class PollForm extends React.Component {
                   <li>
                     <div className="card">
                       <div className="card-content">
-                        <button className="btn" name="homeName" onClick = {this.handleClick}>Home Wins</button>
                         <h3>{event.homeName}</h3>
-                        
+                        <button className="btn" name="homeName" onClick = {() => this.handleClick('homeName')}>Home Wins</button>
                       </div>
                     </div>
                   </li>
                   <li>
                     <div className="card">
                       <div className="card-content">
-                        <button className="btn" name="draw" onClick = {this.handleClick}>Draw</button>
+                        <button className="btn" name="draw" onClick = {() => this.handleClick('draw')}>Draw</button>
                       </div>
                     </div>
                   </li>
@@ -72,7 +69,7 @@ class PollForm extends React.Component {
                     <div className="card">
                       <div className="card-content">
                         <h3>{event.awayName}</h3>
-                        <button className="btn" name="awayName" onClick = {this.handleClick}>Away Wins</button>
+                        <button className="btn" name="awayName" onClick = {() => this.handleClick('awayName')}>Away Wins</button>
                       </div>
                     </div>
                   </li>

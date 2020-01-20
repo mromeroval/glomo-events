@@ -35,6 +35,32 @@ class PollList extends React.Component {
     this.setState({activeEvent: event})
   }
 
+  sendVote = (vote) => {
+    const data= {
+      event: this.state.activeEvent.id,
+      user: "user4@mail.com",
+      homeName: 0,
+      awayName: 0,
+      draw: 0
+    }
+    data[vote]=1;
+    fetch(API,{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then( response => {
+      if(!response.ok){ throw new Error('Network response was Not OK')}
+      }
+    )
+    .catch((error) => {
+      console.error( error);
+    })
+
+  }
+
   componentDidMount() {
     this.setState({ isLoading: true });
     fetch(API)
@@ -62,7 +88,9 @@ class PollList extends React.Component {
         <PollForm
           isLoading = {this.state.isLoading}
           event = {this.state.activeEvent}
-          events = {this.state.events} />
+          events = {this.state.events}
+          sendVote = {this.sendVote}
+        />
       </div>
     );
   }
