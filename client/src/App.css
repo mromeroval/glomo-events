@@ -1,16 +1,32 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: #282c34;
   color: #fff;
   line-height: 1.5;
   text-align: center;
+  background:#020a1d  url(./lights.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+hr {
+  border: 0;
+  width: 80%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 255, 255, 0.75), rgba(0, 0, 0, 0));
+  height: 2px;
+}
+
+.title {
+  text-shadow: 1px 4px 4px #020a1d;
+  color: #fff;
 }
 
 h1, h2, h3 {
@@ -23,39 +39,53 @@ p {
   padding: 1 em 0;
 }
 
+
 .btn {
-  display: inline-block;
-  background: #282c34;
-  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
   text-decoration: none;
-  padding: 1em 2em;
-  border: 1px solid #485369;
-  margin: .5em 0;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
 }
 
 .btn:hover {
   background: #0b1a36;
 }
 
-/* #containter {
-  min-height: 1000px;
-} */
-
-
-#container .bgImage {
-  position: absolute;
-  background: #485369 url(./lights.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
+#containter {
   height: 100%;
-  z-index: -1;
 }
 
-#container h1 {
-  padding-top: 50px;
-  padding-bottom: 0;
+
+
+.sport-title {
+  padding: .5em;
+}
+
+.vs-area {
+  margin: 0.1em 1em;
+  background-color: #485369a2;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.705);
+  box-shadow: 0 0 10px #9ecaed;
+
+}
+.vs-area-top {
+  padding: 1em;
+  background-color: #4853694b;
+  border-radius: 10px 10px 0px 0px;
+}
+.vs-area-bottom {
+  padding: 1em;
+  background-color: #4853694b;
+  border-radius: 0px 0px 10px 10px;
 }
 
 ul {
@@ -64,19 +94,26 @@ ul {
 }
 
 li{
-  margin-bottom: 1em;
-  background: #eaeaea;
-  opacity: 0.4;
-  color: #485369;
+  margin: .5em;
+  padding: .5em;
+  background-color: #485369a2;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.705);
+  box-shadow: 0 0 10px #9ecaed;
 }
 
 @media(min-width:700px){
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr ;
   }
 
-  #voting-section ul {
+  ul {
     display: flex;
+    justify-content: space-around;
+  }
+
+  li {
+    width: 30%;
   }
 }
