@@ -27,10 +27,11 @@ class PollForm extends React.Component {
           <h1 className="title">Sports Poll</h1>
           <hr />
           <h1 className="sport-title">{event.sport}</h1>
-          <p>Country : {event.country}</p>
-          <p>Group : {event.event_group}</p>
+          <hr />
+          <p><span className="label">Country :</span> {event.country}</p>
+          <p><span className="label">Group : </span> {event.event_group}</p>
 
-          <header id="header">
+          <div className="versus">
                 <div className="vs-area vs-area-top">
                 <h2>{event.homeName}</h2>
               </div>
@@ -40,10 +41,10 @@ class PollForm extends React.Component {
               <div className="vs-area vs-area-bottom">
                 <h2>{event.awayName}</h2>
               </div>
-          </header>
+          </div>
 
           <hr />
-          <h1 className="title">Vote</h1>
+          <h1>Vote</h1>
           <hr />
 
           <main id="main">

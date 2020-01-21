@@ -13,6 +13,16 @@ class PollList extends React.Component {
       activeCategory: "",
       categories: [],
       activeEvent: {}
+    //   activeEvent: {
+    //     "awayName": "Doumbia, S/Reboul, F",
+    //     "homeName": "Harris, L G M/Maamoun, K M",
+    //     "event_group": "Nigeria",
+    //     "id": 1003026313,
+    //     "name": "Harris, L G M/Maamoun, K M - Doumbia, S/Reboul, F",
+    //     "sport": "TENNIS",
+    //     "country": "FRANCE",
+    //     "state": "STARTED"
+    // }
     };
   }
 
@@ -38,26 +48,41 @@ class PollList extends React.Component {
     this.setState({categories:unique})
   }
 
-  // Return random sport category
-  randomSport = (sports) => {
-    return sports[Math.floor(Math.random() * sports.length)];
+  // Set a sport category for voting
+  // Then removes it when there is no more events from this category to vote from
+  getRandomSport = () => {
+    let sports = this.state.categories;
+    // console.log("Sports: ",sports)
+    let randomSport = sports[Math.floor(Math.random() * sports.length)];
+    let remain = sports.filter(sport => sport !== randomSport);
+    // console.log("Remaining Sports: ",remain)
+    this.setState({categories : remain})
+    return randomSport
  }
 
-  // Set random event from active events
-  setRandomEvent = () => {
-    let events = this.state.activeEvents;
-    console.log("Actives: ",events)
-    let randomEvent = events[Math.floor(Math.random() * events.length)];
-    let remain = events.filter(event => event.id !== randomEvent.id)
-    console.log("Random:",randomEvent)
+  // Set an active random event for voting
+  // Then removes it from the remaining list to vote
+  setActiveEvent = () => {
+    let activeEvents = this.state.activeEvents;
+    let activeEventsLength = activeEvents.length;
+    console.log(activeEventsLength);
+    if ( activeEventsLength){
+    // console.log("Actives: ",activeEvents)
+    let randomEvent = activeEvents[Math.floor(Math.random() * activeEventsLength)];
+    let remain = activeEvents.filter(event => event.id !== randomEvent.id)
+    // console.log("Random:",randomEvent)
     this.setState({activeEvent:randomEvent});
     this.setState({activeEvents : remain});
-    console.log("Actives remain: ",events)
+    // console.log("Actives remain: ",activeEvents)
+    } else {
+      this.setActiveEvents();
+    }
  }
 
-  // Set active events
-  setActiveEvents = (events) => {
-    let sport = this.randomSport(this.state.categories)
+  // Set active events by selecting a random sport
+  setActiveEvents = () => {
+    let sport = this.getRandomSport();
+    let events = this.state.events;
     this.setState({activeCategory:sport})
     let activeEvents = events.filter(event => event.sport === sport)
     this.setState({activeEvents: activeEvents})
@@ -83,12 +108,8 @@ class PollList extends React.Component {
   //     return event
   // }
 
-  // Set active event
-  // setActiveEvent = (event) => {
-  //   this.setState({activeEvent: event})
-  // }
-
-  // Post event vote
+  // Post a vote for specific event
+  // Then set a new active event
   sendVote = (vote) => {
     const data= {
       event: this.state.activeEvent.id,
@@ -106,12 +127,9 @@ class PollList extends React.Component {
       body: JSON.stringify(data)
     })
     .then( response => {
-      if (!response.ok) {
-        throw new Error('Network response was Not OK')
-      }
-    }
-    )
-    .then(this.setRandomEvent())
+      if (!response.ok) { throw new Error('Network response was Not OK') }
+    })
+    .then(this.setActiveEvent())
     .catch((error) => {
       console.error( error);
     })
@@ -130,9 +148,8 @@ class PollList extends React.Component {
       .then(events => {
         this.setState({events});
         this.setCategories(events);
-        this.setActiveEvents(events);
-        this.setRandomEvent();
-        // this.setState({activeEvent:this.state.events[1]})
+        this.setActiveEvents();
+        this.setActiveEvent();
         console.log(this.state)
       })
       .then(this.setState({ isLoading:false }))
