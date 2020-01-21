@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:Arial, Helvetica, sans-serif;
   color: #fff;
   line-height: 1.5;
   text-align: center;
@@ -9,6 +9,10 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+
+.label {
+  font-weight: bold;
 }
 
 img {
@@ -26,12 +30,12 @@ hr {
 
 .title {
   text-shadow: 1px 4px 4px #020a1d;
-  color: #fff;
+  color: rgb(238, 157, 8);
 }
 
 h1, h2, h3 {
   margin: 0;
-  padding: 1 em 0;
+  padding: 0;
 }
 
 p {
@@ -54,7 +58,8 @@ p {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1em;
+  font-weight: bold;
   margin: 4px 2px;
   cursor: pointer;
   width: 100%;
@@ -66,7 +71,11 @@ p {
 }
 
 .sport-title {
-  padding: .5em;
+  padding: 0;
+}
+
+.versus {
+  margin: 1em .5em 2em;
 }
 
 .vs-area {
@@ -91,7 +100,7 @@ p {
 
 ul {
   list-style: none;
-  padding: 1em 2em;
+  padding: .2em 2em;
 }
 
 li{
@@ -103,10 +112,57 @@ li{
   box-shadow: 0 0 10px #9ecaed;
 }
 
+.bg-modal {
+  width: 100%;
+  min-height: 100%;
+  background-color: rgb(0, 0, 0, 0.75);
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-content {
+  width: 75%;
+  height: 25%;
+  background-color: #fff;
+  margin-top: 10em;
+  border-radius: 8px;
+  color : black;
+  padding: 1em;
+}
+
+.btn-modal {
+  background-color: #3a8ed3;
+  border: 2px solid #245c8a;
+  color: white;
+  padding: 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
+
+
 @media(min-width:700px){
   .grid {
     display: grid;
     grid-template-columns: 1fr ;
+  }
+
+  .modal-content {
+    padding: 2em;
+    width: 50%;
+    height: 15%;
+  }
+
+  .btn-modal {
+    margin-top: 20px;
   }
 
   ul {
