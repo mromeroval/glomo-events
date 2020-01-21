@@ -16,26 +16,14 @@ class PollList extends React.Component {
       categories: [],
       activeEvent: {},
       modalIsOpen: false
-    //   activeEvent: {
-    //     "awayName": "Doumbia, S/Reboul, F",
-    //     "homeName": "Harris, L G M/Maamoun, K M",
-    //     "event_group": "Nigeria",
-    //     "id": 1003026313,
-    //     "name": "Harris, L G M/Maamoun, K M - Doumbia, S/Reboul, F",
-    //     "sport": "TENNIS",
-    //     "country": "FRANCE",
-    //     "state": "STARTED"
-    // }
     };
 
     this.setActiveEvent = this.setActiveEvent.bind(this);
     this.setActiveEvents = this.setActiveEvents.bind(this);
   }
 
-
   // Set list of sport categories
    setCategories = (events) => {
-    console.log("setCategories")
     const categories = [];
     events.forEach(event => {
         categories.push(event.sport)
@@ -47,9 +35,7 @@ class PollList extends React.Component {
   // Set a sport category for voting
   // Then removes it when there is no more events from this category to vote from
   setActiveCategory = () => {
-    console.log("setActiveCategory")
     let sports = this.state.categories;
-    // console.log("Sports: ",sports)
     let randomSport = sports[Math.floor(Math.random() * sports.length)];
     let remain = sports.filter(sport => sport !== randomSport);
     let previousCategory = this.state.activeCategory;
@@ -71,104 +57,41 @@ class PollList extends React.Component {
   // Set an active random event for voting
   // Then removes it from the remaining list to vote
   setActiveEvent = () => {
- 
-    console.log("setActiveEvent")
     let activeEvents = this.state.activeEvents;
-    console.log(activeEvents)
     let activeEventsLength = activeEvents.length;
-    console.log(activeEventsLength);
     if (!activeEventsLength){
-      console.log("No active events");
       this.showModal();
       this.setActiveEvents();
-      // let activeCategory = 'SWIMMING';
-      // this.setState(() => ({activeCategory : activeCategory}))
-      // let events = this.state.events;
-      // this.setState({activeCategory:sport})
-      // let activeEvents = events.filter(event => event.sport === sport)
-      // this.setState({activeEvents: activeEvents})
-      // this.setState({activeEvents:["events"]});
-      // console.log(this.state)
     } else {
-    // if (activeEventsLength){
-    // console.log("Actives: ",activeEvents)
     let randomEvent = activeEvents[Math.floor(Math.random() * activeEventsLength)];
     let remain = activeEvents.filter(event => event.id !== randomEvent.id)
-    // console.log("Random:",randomEvent)
     this.setState({
       activeEvent:randomEvent,
       activeEvents : remain
     });
-    console.log(this.state)
-    // }
-    // else {
-    //   this.resetActiveEvents();
-    //   this.showModal();
-    // }
   }
  }
 
   // Set active events by selecting a random sport
   setActiveEvents = () => {
-    console.log("setActiveEvents")
     let sport = this.setActiveCategory();
     let events = this.state.events;
     this.setState({activeCategory:sport});
     let activeEvents = events.filter(event => event.sport === sport);
-    this.setState(
-      {activeEvents: activeEvents},
-      ()=>this.setActiveEvent()
-      );
-    console.log(this.state);
+    this.setState({ activeEvents: activeEvents }, () => this.setActiveEvent() );
     return activeEvents;
   }
 
-  // Reset the list of events after finishig voting in one category
-  resetActiveEvents = () => {
-    this.setState({
-      activeEvents: [],
-      activeCategory: "",
-      activeEvent: {},
-      modalIsOpen: false
-    })
-    // console.log(this.state)
-    // const events = this.state.events;
-    // this.setCategories(events);
-    // let activeEvents = this.state.activeEvents;
-    // let activeEventsLength = activeEvents.length;
-    // console.log(activeEventsLength);
-    // if (!activeEventsLength){
-      // let events = this.state.events;
-      // this.setState({events});
-      //   this.setCategories(events);
-      //   this.setActiveEvents();
-      //   this.setActiveEvent();
-    // this.setActiveEvent();
-    // }
-
-  }
 
   setNewCategory = () => {
-    console.log(this.state)
     let sport = this.setActiveCategory();
     let events = this.state.events;
     this.setState({activeCategory:sport})
     let activeEvents = events.filter(event => event.sport === sport)
-    this.setState({activeEvents: activeEvents})
-    
-  
-    // let sport = this.setActiveCategory();
-    // console.log(sport);
-    // let events = this.state.events;
-    // this.setState({activeCategory:sport})
-    // let activeEvents = events.filter(event => event.sport === sport)
-    // this.setState({activeEvents: activeEvents})
     this.setState({
-      modalIsOpen:false,
+      activeEvents: activeEvents,
+      modalIsOpen:false
     });
-    console.log(this.state)
-    // this.sendVote('draw')
-    // console.log(this.state.activeCategory)
   }
 
   // POST a vote for specific event
@@ -196,7 +119,6 @@ class PollList extends React.Component {
     .catch((error) => {
       console.error( error);
     })
-
   }
 
   componentDidMount() {
@@ -210,15 +132,12 @@ class PollList extends React.Component {
         this.setState({events});
         this.setCategories(events);
         this.setActiveEvents();
-        // this.setActiveEvent();
-        console.log(this.state)
       })
       .then(this.setState({ isLoading:false }))
       .catch((error) => {
         console.error('There has been a problem with your fetch operation:', error);
       })
   }
-  
 
   render() {
     return (
