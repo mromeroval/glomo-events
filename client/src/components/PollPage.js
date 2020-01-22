@@ -15,7 +15,8 @@ class PollList extends React.Component {
       activeCategory: "",
       categories: [],
       activeEvent: {},
-      modalIsOpen: false
+      modalIsOpen: false,
+      modalIsActive: true
     };
 
     this.setActiveEvent = this.setActiveEvent.bind(this);
@@ -44,7 +45,6 @@ class PollList extends React.Component {
       previousCategory : previousCategory,
       activeCategory : randomSport})
     return randomSport
-  
  }
 
  showModal = () => {
@@ -57,9 +57,14 @@ class PollList extends React.Component {
   // Set an active random event for voting
   // Then removes it from the remaining list to vote
   setActiveEvent = () => {
+    let categoriesLength = this.state.categories.length
     let activeEvents = this.state.activeEvents;
     let activeEventsLength = activeEvents.length;
-    if (!activeEventsLength){
+    if ( !activeEventsLength && !categoriesLength){
+      this.setState({modalIsActive:false})
+      this.showModal();
+      this.cleanState();
+    } else if (!activeEventsLength){
       this.showModal();
       this.setActiveEvents();
     } else {
@@ -92,6 +97,19 @@ class PollList extends React.Component {
       activeEvents: activeEvents,
       modalIsOpen:false
     });
+  }
+
+  cleanState = () => {
+    this.setState({
+      isLoading: false,
+      events: [],
+      activeEvents: [],
+      previousCategory: "",
+      activeCategory: "",
+      categories: [],
+      activeEvent: {},
+      // modalIsOpen: false
+    })
   }
 
   // POST a vote for specific event
@@ -146,9 +164,7 @@ class PollList extends React.Component {
           sport = {this.state.previousCategory}
           hideModal = {this.hideModal}
           isOpen = {this.state.modalIsOpen}
-          resetActiveEvents = {this.resetActiveEvents}
-          setNewCategory = {this.setNewCategory}
-          sendVote= {this.sendVote}
+          modalIsActive = {this.state.modalIsActive}
         />
         <PollForm
           isLoading = {this.state.isLoading}
