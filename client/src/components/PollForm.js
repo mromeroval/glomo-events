@@ -62,7 +62,7 @@ class PollForm extends React.Component {
                   <li>
                     <div className="card">
                       <div className="card-content">
-                        <button className="btn" name="draw" onClick = {() => this.handleClick('draw')}>Draw</button>
+                        <button className="btn btn-draw" name="draw" onClick = {() => this.handleClick('draw')}>Draw</button>
                       </div>
                     </div>
                   </li>

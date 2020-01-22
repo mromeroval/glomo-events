@@ -14,7 +14,16 @@ class PollList extends React.Component {
       previousCategory: "",
       activeCategory: "",
       categories: [],
-      activeEvent: {},
+      activeEvent: {
+        "awayName": "Chernetsova, D/Perper, A",
+        "homeName": "Baskova, D/Podlinska, M",
+        "event_group": "El Kantaoui",
+        "id": 1003026673,
+        "name": "Baskova, D/Podlinska, M - Chernetsova, D/Perper, A",
+        "sport": "TENNIS",
+        "country": "FRANCE",
+        "state": "STARTED"
+    },
       modalIsOpen: false,
       modalIsActive: true
     };
@@ -149,7 +158,7 @@ class PollList extends React.Component {
       .then(events => {
         this.setState({events});
         this.setCategories(events);
-        this.setActiveEvents();
+        // this.setActiveEvents();
       })
       .then(this.setState({ isLoading:false }))
       .catch((error) => {
