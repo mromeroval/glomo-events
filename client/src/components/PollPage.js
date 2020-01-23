@@ -1,129 +1,104 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PollForm from './PollForm';
 import Modal from './Modal';
 
 const API = 'http://localhost:5000/api/events/';
 
-class PollList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      events: [],
-      activeEvents: [],
-      previousCategory: "",
-      activeCategory: "",
-      categories: [],
-      activeEvent: {},
-      modalIsOpen: false,
-      modalIsActive: true
-    };
-
-    this.setActiveEvent = this.setActiveEvent.bind(this);
-    this.setActiveEvents = this.setActiveEvents.bind(this);
-  }
+const PollList = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [events, setEvents] = useState();
+  const [activeEvents, setActiveEventsState] = useState([]);
+  const [previousCategory, setPreviousCategory] = useState("");
+  const [activeCategory, setActiveCategoryState] = useState("");
+  const [categories, setCategoriesState] = useState([]);
+  const [activeEvent, setActiveEventState] = useState({});
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsActive, setModalIsActive] = useState(true);
 
   // Set list of sport categories
-   setCategories = (events) => {
+  const setCategories = (events) => {
     const categories = [];
     events.forEach(event => {
         categories.push(event.sport)
     })
     let unique = [...new Set(categories)];
-    this.setState({categories:unique})
+    setCategoriesState(unique)
   }
 
   // Set a sport category for voting
   // Then removes it when there is no more events from this category to vote from
-  setActiveCategory = () => {
-    let sports = this.state.categories;
+  const setActiveCategory = () => {
+    let sports = categories;
     let randomSport = sports[Math.floor(Math.random() * sports.length)];
     let remain = sports.filter(sport => sport !== randomSport);
-    let previousCategory = this.state.activeCategory;
-    this.setState({
-      categories : remain,
-      previousCategory : previousCategory,
-      activeCategory : randomSport})
+    let previousCategory = activeCategory;
+    setCategoriesState(remain);
+    setPreviousCategory(previousCategory);
+    setActiveCategoryState(randomSport)
     return randomSport
  }
 
- showModal = () => {
-  this.setState({modalIsOpen:true})
+ const showModal = () => {
+   setModalIsOpen(true)
  }
- hideModal = () => {
-  this.setState({modalIsOpen:false})
+ const hideModal = () => {
+  setModalIsOpen(false)
  }
 
   // Set an active random event for voting
   // Then removes it from the remaining list to vote
-  setActiveEvent = () => {
-    let categoriesLength = this.state.categories.length
-    let activeEvents = this.state.activeEvents;
+  const setActiveEvent = () => {
+    let categoriesLength = categories.length
+    let activeEvents = activeEvents;
     let activeEventsLength = activeEvents.length;
     if ( !activeEventsLength && !categoriesLength){
-      this.setState({modalIsActive:false})
-      this.showModal();
-      this.cleanState();
+      setModalIsActive(false);
+      showModal();
+      cleanState();
     } else if (!activeEventsLength){
-      this.showModal();
-      this.setActiveEvents();
-    } else {
-    let randomEvent = activeEvents[Math.floor(Math.random() * activeEventsLength)];
-    let remain = activeEvents.filter(event => event.id !== randomEvent.id)
-    this.setState({
-      activeEvent:randomEvent,
-      activeEvents : remain
-    });
-  }
+        showModal();
+        setActiveEvents();
+      } else {
+        let randomEvent = activeEvents[Math.floor(Math.random() * activeEventsLength)];
+        let remain = activeEvents.filter(event => event.id !== randomEvent.id)
+        setActiveEvent(randomEvent);
+        setActiveEventsState(remain);
+      }
  }
 
   // Set active events by selecting a random sport
-  setActiveEvents = () => {
-    let sport = this.setActiveCategory();
-    let events = this.state.events;
-    this.setState({activeCategory:sport});
-    let activeEvents = events.filter(event => event.sport === sport);
-    this.setState({ activeEvents: activeEvents }, () => this.setActiveEvent() );
+  const setActiveEvents = () => {
+    let sport = setActiveCategory();
+    let eventsState = events;
+    setActiveCategoryState(sport)
+    let activeEvents = eventsState.filter(event => event.sport === sport);
+    setActiveEvents(activeEvents);
+    setActiveEvent();
     return activeEvents;
   }
 
-
-  setNewCategory = () => {
-    let sport = this.setActiveCategory();
-    let events = this.state.events;
-    this.setState({activeCategory:sport})
-    let activeEvents = events.filter(event => event.sport === sport)
-    this.setState({
-      activeEvents: activeEvents,
-      modalIsOpen:false
-    });
-  }
-
-  cleanState = () => {
-    this.setState({
-      isLoading: false,
-      events: [],
-      activeEvents: [],
-      previousCategory: "",
-      activeCategory: "",
-      categories: [],
-      activeEvent: {},
-      // modalIsOpen: false
-    })
+  const cleanState = () => {
+    setIsLoading(false);
+    setEvents([]);
+    setActiveEventsState([]);
+    setPreviousCategory("");
+    setActiveCategoryState("");
+    setCategoriesState([]);
+    setActiveEventState({});
   }
 
   // POST a vote for specific event
   // Then set a new active event
-  sendVote = (vote) => {
+  const sendVote = (vote) => {
     const data= {
-      event: this.state.activeEvent.id,
+      event: activeEvent.id,
       user: "user@mail.com",
       homeName: 0,
       awayName: 0,
       draw: 0
     }
     data[vote]=1;
-    fetch(API,{
+    fetch(API, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -133,47 +108,54 @@ class PollList extends React.Component {
     .then( response => {
       if (!response.ok) { throw new Error('Network response was Not OK') }
     })
-    .then(this.setActiveEvent())
+    .then(setActiveEvent())
     .catch((error) => {
       console.error( error);
     })
   }
-
-  componentDidMount() {
-    this.setState({ isLoading: true });
+  
+  const fetchData = () => {
+    setIsLoading(true)
     fetch(API)
       .then(response => {
         if (!response.ok){ throw new Error('Network response was Not OK') }
         return response.json()
       })
       .then(events => {
-        this.setState({events});
-        this.setCategories(events);
-        this.setActiveEvents();
+        setEvents(events)
+        setCategories(events);
+        setActiveEvents();
       })
-      .then(this.setState({ isLoading:false }))
+      .then(setIsLoading(false))
       .catch((error) => {
         console.error('There has been a problem with your fetch operation:', error);
       })
   }
 
-  render() {
+  useEffect(() => {
+    fetchData()
+  }, []);
+
+  useEffect(() => {
+    fetchData()
+  }, []);
+
     return (
       <div>
         <Modal
-          sport = {this.state.previousCategory}
-          hideModal = {this.hideModal}
-          isOpen = {this.state.modalIsOpen}
-          modalIsActive = {this.state.modalIsActive}
+          sport = {previousCategory}
+          hideModal = {hideModal}
+          isOpen = {modalIsOpen}
+          modalIsActive = {modalIsActive}
         />
         <PollForm
-          isLoading = {this.state.isLoading}
-          event = {this.state.activeEvent}
-          sendVote = {this.sendVote}
+          isLoading = {isLoading}
+          event = {activeEvent}
+          sendVote = {sendVote}
         />
       </div>
     );
   }
-}
+
 
 export default PollList;

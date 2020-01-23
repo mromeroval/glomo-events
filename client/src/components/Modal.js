@@ -1,13 +1,12 @@
 import React from 'react';
 
-class Modal extends React.Component{
+const Modal = (props) => {
 
-  render(){
-    if (!this.props.isOpen) {
+    if (!props.isOpen) {
       return null;
     }
     
-    if (!this.props.modalIsActive) {
+    if (!props.modalIsActive) {
       return (
         <div className="bg-modal">
         <div className="modal-content">
@@ -24,15 +23,13 @@ class Modal extends React.Component{
         <div className="modal-content">
           <div className="modal-message">
             <h3>You have voted for all the</h3>
-            <h3>{this.props.sport} events!</h3>
+            <h3>{props.sport} events!</h3>
             <p>Would you like to keep voting for another category?</p>
-            <button className="btn btn-modal" onClick={this.props.hideModal}> Keep voting </button>
+            <button className="btn btn-modal" onClick={props.hideModal}> Keep voting </button>
           </div>
         </div>
       </div>
     )
-  }
 }
-
 
 export default Modal;
